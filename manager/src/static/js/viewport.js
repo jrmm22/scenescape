@@ -359,10 +359,11 @@ class Viewport extends THREE.Scene {
 
   // Scene map loading functions
 
-  computePerspectiveCameraPose(floorWidth, floorHeight, fov) {
+  computePerspectiveCameraPose(floorWidth, floorHeight, pixelsPerMeter, fov) {
     const center = { x: floorWidth / 2, y: floorHeight / 2 };
+    const floorHeightMeters = floorHeight / pixelsPerMeter;
     const cameraZ =
-      floorHeight / (2 * Math.tan(THREE.MathUtils.degToRad(fov / 2)));
+      floorHeightMeters / (2 * Math.tan(THREE.MathUtils.degToRad(fov / 2)));
     return { cameraZ, center };
   }
 
@@ -543,6 +544,7 @@ class Viewport extends THREE.Scene {
     const { cameraZ, center } = this.computePerspectiveCameraPose(
       this.floorWidth,
       this.floorHeight,
+      this.sceneScale,
       this.perspectiveCamera.fov,
     );
     this.perspectiveCamera.position.set(center.x, center.y, cameraZ);
